@@ -35,7 +35,7 @@
 
 
 **ES6**
-```javascript=
+```js
 class Person {
     constructor(name, age) {
         this.name = name;
@@ -52,7 +52,7 @@ var p = new Person('Mia', 18);
 ---
 
 **ES5**
-```javascript=
+```js
 function Person(name, age) {
     this.name = name;
     this.age = age;
@@ -86,7 +86,7 @@ var p = new Person('Mia', 18);
 
 
 定義一個``class``
-```javascript=
+```js
 class C {
     constructor() {
         this.num = Math.random();
@@ -101,7 +101,7 @@ class C {
 ---
 
 透過``prototype``改變了``class``裡面的方法
-```javascript=
+```js
 
 var c1 = new C();
 c1.rand();  "Random: 0.4324299..."
@@ -122,7 +122,7 @@ c1.rand();  "Random:0"
 
 定義一個``class``並透過``prototype``設定``count++``
 
-```javascript=
+```js
 class C {
 	constructor() {
 		C.prototype.count++;
@@ -137,7 +137,7 @@ class C {
 
 增加共享属性``count``
 
-```javascript=
+```js
 // 增加共享属性
 C.prototype.count = 0;
 var c1 = new C();
@@ -154,7 +154,7 @@ c1.count === c2.count; // true
 ---
 
 分離的遮蔽屬性
-```javascript=
+```js
 
 class C {
 	constructor(id) {
@@ -173,7 +173,7 @@ c1.id(); // TypeError -- `c1.id`現在是字串"c1"
 ---
 
 [[HomeObject]]
-```javascript=
+```js
 class P {
 	foo() { console.log( "P.foo" ); }
 }
@@ -203,7 +203,7 @@ E.foo(); // "P.foo"
 
 ---
 
-```javascript=
+```js
 var D = {
 	foo: function() { console.log( "D.foo" ); }
 };
@@ -228,7 +228,7 @@ E.foo(); // "D.foo"
 
 #### 擴展Date
 
-```javascript=
+```js
 class myDate extends Date {
   constructor() {
     super();
@@ -246,7 +246,7 @@ class myDate extends Date {
 
 #### 擴展 null
 
-```javascript=
+```js
 class nullExtends extends null {
   constructor() {}
 }
@@ -265,7 +265,7 @@ new nullExtends(); //ReferenceError: this is not defined
 ---
 
 Using super in classes
-```javascript=
+```js
 class Banner extends Component {
  constructor(props) {
      // ReferenceError，使用this前super需要先被调用！
@@ -278,7 +278,7 @@ class Banner extends Component {
 ---
 
 Super-calling static methods
-```javascript=
+```js
 class Human {
   constructor() {}
   static ping() {
@@ -297,7 +297,7 @@ Computer.pingpong(); // 'ping pong'
 ---
 
 ### React 的class component?
-```javascript=
+```js
 class Banner extends Component {
   state = {
     openAtStart: true,
@@ -319,7 +319,7 @@ class Banner extends Component {
 
 ## 沒有constructor && super ?
 
-```javascript=
+```js
 class Banner extends Component {
   stste={
     openAtStart: true,
@@ -340,7 +340,7 @@ class Banner extends Component {
 
 其實是babel幫你加了,或new(產生實體)的時候自動幫你補上
 根據[ ES.next 類提案](https://github.com/tc39/proposal-class-fields)
-```javascript=
+```js
 class Banner extends Component {
   constructor(...args) {
     super(...args);
@@ -356,7 +356,7 @@ class Banner extends Component {
 ---
 
 ## static ?
-```javascript=
+```js
 class say {
     static hello(name){
         console.log('hello',name)
@@ -375,7 +375,7 @@ say.hello('Q_Q') // say.hello is not a function
 ---
 
 **曾經用class集中管理api**
-```javascript=
+```js
 export default class ProductAPI {
     static getProduct(page = 1){
         return  axios({
@@ -393,7 +393,7 @@ export default class ProductAPI {
 ---
 
 如何使用?
-```javascript=
+```js
 import ProductAPI from '../../api/API-Product';
 
     getProduct = (e) => {
@@ -438,7 +438,7 @@ import ProductAPI from '../../api/API-Product';
 
 ---
 
-```javascript=
+```js
 let animal = {
   name: "Animal",
   eat() {
@@ -462,7 +462,7 @@ rabbit.eat(); // Rabbit eats.
 
 ---
 
-```javascript=
+```js
 let animal = {
   name: "Animal",
   eat() {
@@ -502,7 +502,7 @@ longEar.eat(); // Error: Maximum call stack size exceeded
 
 ---
 
-```javascript=
+```js
 let animal = {
   name: "Animal",
   eat() {         // [[HomeObject]] == animal
