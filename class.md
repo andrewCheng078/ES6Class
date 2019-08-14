@@ -52,7 +52,7 @@ var p = new Person('Mia', 18);
 ---
 
 **ES5**
-```
+```javascript=
 function Person(name, age) {
     this.name = name;
     this.age = age;
@@ -202,6 +202,21 @@ E.foo(); // "P.foo"
 
 ---
 
+```javascript=
+var D = {
+	foo: function() { console.log( "D.foo" ); }
+};
+
+// E 链接到 D 来进行委托
+var E = Object.create( D );
+
+// 手动绑定 `foo` 的 `[[HomeObject]]` 到
+// `E`, 因为 `E.[[Prototype]]` 是 `D`，所以
+// `super()` 是 `D.foo()`
+E.foo = C.prototype.foo.toMethod( E, "foo" );
+
+E.foo(); // "D.foo"
+```
 
 
 ---
@@ -322,7 +337,7 @@ class Banner extends Component {
 
 ---
 
-其實是babel幫你加了
+其實是babel幫你加了,或new(產生實體)的時候自動幫你補上
 根據[ ES.next 類提案](https://github.com/tc39/proposal-class-fields)
 ```javascript=
 class Banner extends Component {
@@ -400,6 +415,120 @@ import ProductAPI from '../../api/API-Product';
 - [You-Dont-Know-JS](https://github.com/getify/You-Dont-Know-JS/blob/master/this%20%26%20object%20prototypes/apA.md)
 - [overreacted](https://overreacted.io/zh-hant/why-do-we-write-super-props/)
 [The constructor is dead, long live the constructor!](https://hackernoon.com/the-constructor-is-dead-long-live-the-constructor-c10871bea599)
+
+
+---
+
+
+## 聽了想睡覺系列
+
+
+---
+ 
+
+![](https://i.imgur.com/yvVLvEU.png)
+ 
+ 
+---
+
+
+## 如何實現一個super()
+
+
+---
+
+```javascript=
+let animal = {
+  name: "Animal",
+  eat() {
+    alert(`${this.name} eats.`);
+  }
+};
+
+let rabbit = {
+  __proto__: animal,
+  name: "Rabbit",
+  eat() {
+
+    // that's how super.eat() could presumably work
+    this.__proto__.eat.call(this); // (*)
+
+  }
+};
+
+rabbit.eat(); // Rabbit eats.
+```
+
+---
+
+```javascript=
+let animal = {
+  name: "Animal",
+  eat() {
+    alert(`${this.name} eats.`);
+  }
+};
+
+let rabbit = {
+  __proto__: animal,
+  eat() {
+    // ...bounce around rabbit-style and call parent (animal) method
+    this.__proto__.eat.call(this); // (*)
+  }
+};
+
+let longEar = {
+  __proto__: rabbit,
+  eat() {
+    // ...do something with long ears and call parent (rabbit) method
+    this.__proto__.eat.call(this); // (**)
+  }
+};
+
+
+longEar.eat(); // Error: Maximum call stack size exceeded
+```
+
+---
+
+![](https://i.imgur.com/iwlYzgM.png)
+
+
+---
+
+## ```[[HomeObject]]```
+
+
+---
+
+```javascript=
+let animal = {
+  name: "Animal",
+  eat() {         // [[HomeObject]] == animal
+    alert(`${this.name} eats.`);
+  }
+};
+
+let rabbit = {
+  __proto__: animal,
+  name: "Rabbit",
+  eat() {         // [[HomeObject]] == rabbit
+    super.eat();
+  }
+};
+
+let longEar = {
+  __proto__: rabbit,
+  name: "Long Ear",
+  eat() {         // [[HomeObject]] == longEar
+    super.eat();
+  }
+};
+
+
+longEar.eat();  // Long Ear eats.
+```
+
 
 ---
 
