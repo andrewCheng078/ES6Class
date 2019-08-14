@@ -52,7 +52,7 @@ var p = new Person('Mia', 18);
 ---
 
 **ES5**
-```javascript=
+```
 function Person(name, age) {
     this.name = name;
     this.age = age;
