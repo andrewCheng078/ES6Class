@@ -35,7 +35,7 @@
 
 
 **ES6**
-```js
+```javascript=
 class Person {
     constructor(name, age) {
         this.name = name;
@@ -52,7 +52,7 @@ var p = new Person('Mia', 18);
 ---
 
 **ES5**
-```js
+```javascript=
 function Person(name, age) {
     this.name = name;
     this.age = age;
@@ -61,6 +61,22 @@ function Person(name, age) {
 Person.prototype.toString = function () {
     return '(' + this.name + ',' + this.age + ')';
 }
+var p = new Person('Mia', 18);
+```
+
+---
+
+**討論**
+與上方的ES5有何區別
+```javascript=
+function Person(name, age) {
+    this.name = name;
+    this.age = age;
+    this.toString = function () {
+        return '(' + this.name + ',' + this.age + ')';
+    };
+}
+
 var p = new Person('Mia', 18);
 ```
 
@@ -86,7 +102,7 @@ var p = new Person('Mia', 18);
 
 
 定義一個``class``
-```js
+```javascript=
 class C {
     constructor() {
         this.num = Math.random();
@@ -101,7 +117,7 @@ class C {
 ---
 
 透過``prototype``改變了``class``裡面的方法
-```js
+```javascript=
 
 var c1 = new C();
 c1.rand();  "Random: 0.4324299..."
@@ -122,7 +138,7 @@ c1.rand();  "Random:0"
 
 定義一個``class``並透過``prototype``設定``count++``
 
-```js
+```javascript=
 class C {
 	constructor() {
 		C.prototype.count++;
@@ -137,7 +153,7 @@ class C {
 
 增加共享属性``count``
 
-```js
+```javascript=
 // 增加共享属性
 C.prototype.count = 0;
 var c1 = new C();
@@ -154,7 +170,7 @@ c1.count === c2.count; // true
 ---
 
 分離的遮蔽屬性
-```js
+```javascript=
 
 class C {
 	constructor(id) {
@@ -173,7 +189,7 @@ c1.id(); // TypeError -- `c1.id`現在是字串"c1"
 ---
 
 [[HomeObject]]
-```js
+```javascript=
 class P {
 	foo() { console.log( "P.foo" ); }
 }
@@ -203,7 +219,7 @@ E.foo(); // "P.foo"
 
 ---
 
-```js
+```javascript=
 var D = {
 	foo: function() { console.log( "D.foo" ); }
 };
@@ -228,7 +244,7 @@ E.foo(); // "D.foo"
 
 #### 擴展Date
 
-```js
+```javascript=
 class myDate extends Date {
   constructor() {
     super();
@@ -246,7 +262,7 @@ class myDate extends Date {
 
 #### 擴展 null
 
-```js
+```javascript=
 class nullExtends extends null {
   constructor() {}
 }
@@ -265,7 +281,7 @@ new nullExtends(); //ReferenceError: this is not defined
 ---
 
 Using super in classes
-```js
+```javascript=
 class Banner extends Component {
  constructor(props) {
      // ReferenceError，使用this前super需要先被调用！
@@ -278,7 +294,7 @@ class Banner extends Component {
 ---
 
 Super-calling static methods
-```js
+```javascript=
 class Human {
   constructor() {}
   static ping() {
@@ -297,7 +313,7 @@ Computer.pingpong(); // 'ping pong'
 ---
 
 ### React 的class component?
-```js
+```javascript=
 class Banner extends Component {
   state = {
     openAtStart: true,
@@ -319,7 +335,7 @@ class Banner extends Component {
 
 ## 沒有constructor && super ?
 
-```js
+```javascript=
 class Banner extends Component {
   stste={
     openAtStart: true,
@@ -340,7 +356,7 @@ class Banner extends Component {
 
 其實是babel幫你加了,或new(產生實體)的時候自動幫你補上
 根據[ ES.next 類提案](https://github.com/tc39/proposal-class-fields)
-```js
+```javascript=
 class Banner extends Component {
   constructor(...args) {
     super(...args);
@@ -356,7 +372,7 @@ class Banner extends Component {
 ---
 
 ## static ?
-```js
+```javascript=
 class say {
     static hello(name){
         console.log('hello',name)
@@ -374,8 +390,39 @@ say.hello('Q_Q') // say.hello is not a function
 
 ---
 
+
+靜態屬性目前來說有兩種解決方案，一種是使用ES7的Class Properties標準，可以使用static關鍵字來定義靜態屬性
+```javascript=
+// ES7語法方式
+class Video extends React.Component {
+  static defaultProps = {
+    autoPlay: false,
+    maxLoops: 10,
+  }
+  render() { ... }
+}
+```
+
+
+---
+
+另一種是定義到類別原本的定義外面:
+```javascript=
+// ES6語法方式
+class Video extends React.Component {
+  constructor(props) { ... }
+  render() { ... }
+}
+
+Video.defaultProps = { ... }
+```
+
+
+---
+
+
 **曾經用class集中管理api**
-```js
+```javascript=
 export default class ProductAPI {
     static getProduct(page = 1){
         return  axios({
@@ -383,17 +430,16 @@ export default class ProductAPI {
             url:`${apiUrl}/api/${dbName}/products/?page=${page}`,
         })
     }
-    
     static addProduct(){
-
     }
 }
 ```
 
 ---
 
+
 如何使用?
-```js
+```javascript=
 import ProductAPI from '../../api/API-Product';
 
     getProduct = (e) => {
@@ -438,7 +484,7 @@ import ProductAPI from '../../api/API-Product';
 
 ---
 
-```js
+```javascript=
 let animal = {
   name: "Animal",
   eat() {
@@ -462,7 +508,7 @@ rabbit.eat(); // Rabbit eats.
 
 ---
 
-```js
+```javascript=
 let animal = {
   name: "Animal",
   eat() {
@@ -502,7 +548,7 @@ longEar.eat(); // Error: Maximum call stack size exceeded
 
 ---
 
-```js
+```javascript=
 let animal = {
   name: "Animal",
   eat() {         // [[HomeObject]] == animal
